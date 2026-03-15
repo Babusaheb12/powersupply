@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/powersupply.iml" filepath="$PROJECT_DIR$/.idea/powersupply.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/powersupply_android.iml" filepath="$PROJECT_DIR$/android/powersupply_android.iml" />
     </modules>
   </component>
 </project>
