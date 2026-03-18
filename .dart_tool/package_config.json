@@ -399,15 +399,15 @@
     },
     {
       "name": "google_mlkit_commons",
-      "rootUri": "file:///Users/babusaheb/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.6.1",
+      "rootUri": "file:///Users/babusaheb/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.11.1",
       "packageUri": "lib/",
-      "languageVersion": "2.16"
+      "languageVersion": "3.8"
     },
     {
       "name": "google_mlkit_text_recognition",
-      "rootUri": "file:///Users/babusaheb/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.11.0",
+      "rootUri": "file:///Users/babusaheb/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.15.1",
       "packageUri": "lib/",
-      "languageVersion": "2.16"
+      "languageVersion": "3.8"
     },
     {
       "name": "html",

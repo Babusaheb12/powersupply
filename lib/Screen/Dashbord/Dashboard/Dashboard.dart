@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../Api/shared_preference.dart';
 import '../../../utils/Size_config.dart';
 import '../../../utils/flutter_font_style.dart';
+import '../../StoreReading/storereadingshow/readingshow/readingshow.dart';
 import '../AddProject/AddProject.dart';
+import '../AddProject/AddstoreProject.dart';
 import '../viewReports/ShowInReading.dart';
 
 
@@ -50,7 +52,7 @@ class _DashboardPageView extends StatelessWidget {
               //   ),
               // );
             },
-            icon:  Icon(Icons.notifications, color: Colors.white),
+            icon: const Icon(Icons.logout, color: Colors.white),
           ),
         ],
       ),
@@ -116,6 +118,22 @@ class _DashboardPageView extends StatelessWidget {
                     },
                   ),
 
+                  /// Draw Layout
+                  _actionCard(
+                    icon: Icons.electric_meter,
+                    color: Color(0xFF28A745),
+                    title: "Add Store Meter Reading",
+                    subtitle: "Add and manage meter readings",
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CreateStoreProject(),
+                        ),
+                      );
+                    },
+                  ),
+
                   /// Reports
                   _actionCard(
                     icon: Icons.description,
@@ -123,10 +141,6 @@ class _DashboardPageView extends StatelessWidget {
                     title: "View Reports",
                     subtitle: "Check previous meter reading",
                     onTap: () {
-                      // if (onNavigateToProfile != null) {
-                      //   onNavigateToProfile!(1);
-                      // }
-
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -135,17 +149,21 @@ class _DashboardPageView extends StatelessWidget {
                       );
                     },
                   ),
-                  /// Draw Layout
-                  _actionCard(
-                    icon: Icons.brush,
-                    color:  Color(0xFF007BFF),
-                    title: "Draw Layout",
-                    subtitle: "Add or view your designs",
-                    onTap: () {
 
+                  _actionCard(
+                    icon: Icons.receipt_long, // better icon for reports 📊
+                    color: Color(0xFF28A745),
+                    title: "View Store Reading",
+                    subtitle: "Check previous store meter readings",
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => StoreReadingScreen(),
+                        ),
+                      );
                     },
                   ),
-
                    SizedBox(height: 20),
 
                   Text("Employee Information",

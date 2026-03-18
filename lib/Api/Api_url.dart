@@ -18,4 +18,13 @@ class ApiUrls {
   static const siteReadingInsert = '${baseUrl}site_reading_insert.php';
   static const siteReadinglist= '${baseUrl}site_readings_list.php';  //
   static const ShowInReading = '${baseUrl}site_reading_difference.php'; 
+
+  // store reading add api
+  static const storeReadingInsert = '${baseUrl}month_reading_insert.php';
+  static const storeReading = '${baseUrl}month_reading_list.php';
+  static const storeReadingimg = '${baseUrl}month_reading_difference.php';
+
+  /// logout
+  static const logout = '${baseUrl}logout.php';
+
 }
