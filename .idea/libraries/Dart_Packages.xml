@@ -467,14 +467,14 @@
         <entry key="google_mlkit_commons">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.6.1/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.11.1/lib" />
             </list>
           </value>
         </entry>
         <entry key="google_mlkit_text_recognition">
           <value>
             <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.11.0/lib" />
+              <option value="$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.15.1/lib" />
             </list>
           </value>
         </entry>
@@ -1180,8 +1180,8 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_maps_flutter_ios-2.17.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_maps_flutter_platform_interface-2.14.2/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_maps_flutter_web-0.5.14+3/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.6.1/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.11.0/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_commons-0.11.1/lib" />
+      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/google_mlkit_text_recognition-0.15.1/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/html-0.15.6/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/http-1.6.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.dev/http_parser-4.1.2/lib" />

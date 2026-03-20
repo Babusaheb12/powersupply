@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'Bloc/ShowInReading/show_in_reading_bloc.dart';
 import '../../../Api/shared_preference.dart';
 import 'Bloc/viewFactoryReading/viewFactoryReading.dart';
@@ -39,12 +38,12 @@ class _ShowInReadingScreenView extends StatelessWidget {
       body: BlocBuilder<ShowInReadingBloc, ShowInReadingState>(
         builder: (context, state) {
           if (state is ShowInReadingInitial || state is ShowInReadingLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: CircularProgressIndicator());
           } else if (state is ShowInReadingSuccess) {
             final readings = state.readings;
             
             if (readings.isEmpty) {
-              return const Center(
+              return  Center(
                 child: Text(
                   "No meter readings found",
                   style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -112,21 +111,21 @@ class _ShowInReadingScreenView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
-                  const SizedBox(height: 16),
+                   Icon(Icons.error_outline, color: Colors.red, size: 48),
+                   SizedBox(height: 16),
                   Text(
                     state.message,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(color: Colors.red),
+                    style:  TextStyle(color: Colors.red),
                   ),
-                  const SizedBox(height: 16),
+                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       context.read<ShowInReadingBloc>().add(
                         FetchReadingsEvent(userId: Prefs.userId ?? ''),
                       );
                     },
-                    child: const Text("Retry"),
+                    child:  Text("Retry"),
                   )
                 ],
               ),
@@ -136,27 +135,27 @@ class _ShowInReadingScreenView extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.wifi_off, color: Colors.orange, size: 48),
-                  const SizedBox(height: 16),
-                  const Text(
+                   Icon(Icons.wifi_off, color: Colors.orange, size: 48),
+                   SizedBox(height: 16),
+                   Text(
                     "No internet connection",
                     style: TextStyle(fontSize: 16, color: Colors.orange),
                   ),
-                  const SizedBox(height: 16),
+                   SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       context.read<ShowInReadingBloc>().add(
                         FetchReadingsEvent(userId: Prefs.userId ?? ''),
                       );
                     },
-                    child: const Text("Retry"),
+                    child:  Text("Retry"),
                   )
                 ],
               ),
             );
           }
           
-          return const SizedBox.shrink();
+          return  SizedBox.shrink();
         },
       ),
     );
@@ -171,23 +170,14 @@ class ReportCard extends StatelessWidget {
   final String kwh;
   final String kvah;
 
-   ReportCard({
-    super.key,
-    required this.title,
-    required this.location,
-    required this.date,
-    required this.kwh,
-    required this.kvah,
-  });
+   ReportCard({super.key, required this.title, required this.location, required this.date, required this.kwh, required this.kvah,});
 
   @override
   Widget build(BuildContext context) {
 
     return Container(
       margin:  EdgeInsets.only(bottom: 16),
-
       padding:  EdgeInsets.all(16),
-
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -198,23 +188,18 @@ class ReportCard extends StatelessWidget {
           )
         ],
       ),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           /// Title Row
           Row(
             children: [
-
                Icon(
                 Icons.business,
                 color: Colors.blue,
                 size: 28,
               ),
-
                SizedBox(width: 10),
-
               Expanded(
                 child: Text(
                   title,

@@ -74,10 +74,7 @@ class ViewFactoryReading extends StatelessWidget {
                   child: Text('No reading data available'),
                 );
               }
-              final first = dataList[0] as Map<String, dynamic>;
-              final reading = first['current_reading'] as Map<String, dynamic>? ?? {};
-              final difference = first['difference'] as Map<String, dynamic>? ?? {};
-              return _buildContent(context, reading, difference);
+              return _buildContent(context, dataList);
             }
             return const SizedBox.shrink();
           },
@@ -88,79 +85,121 @@ class ViewFactoryReading extends StatelessWidget {
 
   Widget _buildContent(
     BuildContext context,
-    Map<String, dynamic> reading,
-    Map<String, dynamic> difference,
+    List<dynamic> dataList,
   ) {
-    final kwhReading = reading['kwh_reading'];
-    final kvahReading = reading['kvah_reading'];
-    final kwhDiff = difference['kwh_difference'];
-    final kvahDiff = difference['kvah_difference'];
-
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeaderLabel('Site', 'Site ID: $siteId - $siteName'),
           const SizedBox(height: 12),
-          _buildHeaderLabel('Current Reading', ''),
-          const SizedBox(height: 12),
+          ...dataList.asMap().entries.map((entry) {
+            final index = entry.key;
+            final item = entry.value as Map<String, dynamic>;
+            final reading =
+                item['current_reading'] as Map<String, dynamic>? ?? {};
+            final difference = item['difference'] as Map<String, dynamic>? ?? {};
+            final kwhReading = reading['kwh_reading'];
+            final kvahReading = reading['kvah_reading'];
+            final kwhDiff = difference['kwh_difference'];
+            final kvahDiff = difference['kvah_difference'];
+            final dailyPf = item['daily_pf'];
+            final monthPf = item['month_pf'];
 
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: Column(
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildInfoRow(Icons.location_on_outlined, 'Location', (reading['location'] ?? '').toString()),
-                const Divider(height: 32),
-                _buildInfoRow(Icons.calendar_today_outlined, 'Date & Time', (reading['datetime'] ?? '').toString()),
-                const Divider(height: 32),
-                _buildReadingItem(
-                  'KWH Reading',
-                  kwhReading != null ? (kwhReading is num ? kwhReading.toStringAsFixed(2) : kwhReading.toString()) : '—',
-                  'KWH Image',
-                  (reading['kwh_image'] ?? '').toString(),
-                ),
-                const SizedBox(height: 24),
-                _buildReadingItem(
-                  'KVAH Reading',
-                  kvahReading != null ? (kvahReading is num ? kvahReading.toStringAsFixed(2) : kvahReading.toString()) : '—',
-                  'KVAH Image',
-                  (reading['kvah_image'] ?? '').toString(),
-                ),
-              ],
-            ),
-          ),
-
-          const SizedBox(height: 16),
-          _buildHeaderLabel('Difference', ''),
-          const SizedBox(height: 12),
-
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade200),
-            ),
-            child: Column(
-              children: [
-                _buildSimpleRow(
-                  'KWH Difference',
-                  kwhDiff != null ? (kwhDiff is num ? kwhDiff.toStringAsFixed(2) : kwhDiff.toString()) : '—',
-                ),
+                _buildHeaderLabel('Record ${index + 1}', ''),
                 const SizedBox(height: 12),
-                _buildSimpleRow(
-                  'KVAH Difference',
-                  kvahDiff != null ? (kvahDiff is num ? kvahDiff.toStringAsFixed(2) : kvahDiff.toString()) : '—',
+                _buildHeaderLabel('Current Reading', ''),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade200),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow(Icons.location_on_outlined, 'Location',
+                          (reading['location'] ?? '').toString()),
+                      const Divider(height: 32),
+                      _buildInfoRow(Icons.calendar_today_outlined, 'Date & Time',
+                          (reading['datetime'] ?? '').toString()),
+                      const Divider(height: 32),
+                      _buildReadingItem(
+                        'KWH Reading',
+                        kwhReading != null
+                            ? (kwhReading is num
+                                ? kwhReading.toStringAsFixed(2)
+                                : kwhReading.toString())
+                            : '—',
+                        'KWH Image',
+                        (reading['kwh_image'] ?? '').toString(),
+                      ),
+                      const SizedBox(height: 24),
+                      _buildReadingItem(
+                        'KVAH Reading',
+                        kvahReading != null
+                            ? (kvahReading is num
+                                ? kvahReading.toStringAsFixed(2)
+                                : kvahReading.toString())
+                            : '—',
+                        'KVAH Image',
+                        (reading['kvah_image'] ?? '').toString(),
+                      ),
+                    ],
+                  ),
                 ),
+                const SizedBox(height: 16),
+                _buildHeaderLabel('Difference', ''),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.shade200),
+                  ),
+                  child: Column(
+                    children: [
+                      _buildSimpleRow(
+                        'KWH Difference',
+                        kwhDiff != null
+                            ? (kwhDiff is num
+                                ? kwhDiff.toStringAsFixed(2)
+                                : kwhDiff.toString())
+                            : '—',
+                      ),
+                      const SizedBox(height: 12),
+                      _buildSimpleRow(
+                        'KVAH Difference',
+                        kvahDiff != null
+                            ? (kvahDiff is num
+                                ? kvahDiff.toStringAsFixed(2)
+                                : kvahDiff.toString())
+                            : '—',
+                      ),
+                      const SizedBox(height: 12),
+                      _buildSimpleRow(
+                        'Daily PF',
+                        _formatValue(dailyPf),
+                      ),
+                      const SizedBox(height: 12),
+                      _buildSimpleRow(
+                        'Month PF',
+                        _formatValue(monthPf),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
               ],
-            ),
-          ),
+            );
+          }),
         ],
       ),
     );
@@ -206,7 +245,27 @@ class ViewFactoryReading extends StatelessWidget {
         const SizedBox(height: 8),
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Image.network(url, height: 180, width: double.infinity, fit: BoxFit.cover),
+          child: url.isNotEmpty
+              ? Image.network(
+                  url,
+                  height: 180,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 180,
+                    width: double.infinity,
+                    color: Colors.grey.shade200,
+                    alignment: Alignment.center,
+                    child: const Text('Image not available'),
+                  ),
+                )
+              : Container(
+                  height: 180,
+                  width: double.infinity,
+                  color: Colors.grey.shade200,
+                  alignment: Alignment.center,
+                  child: const Text('Image not available'),
+                ),
         ),
       ],
     );
@@ -220,5 +279,17 @@ class ViewFactoryReading extends StatelessWidget {
         Text(value, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
       ],
     );
+  }
+
+  // String _formatValue(dynamic value) {
+  //   if (value == null) return '—';
+  //   if (value is num) return value.toStringAsFixed(4);
+  //   return value.toString();
+  // }
+
+  String _formatValue(dynamic value) {
+    if (value == null) return '—';
+    if (value is num) return value.toStringAsFixed(4); // 👈 yaha change
+    return value.toString();
   }
 }
