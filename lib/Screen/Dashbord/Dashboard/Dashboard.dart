@@ -9,7 +9,7 @@ import '../AddProject/AddstoreProject.dart';
 import '../viewReports/ShowInReading.dart';
 
 
-class DashboardPage extends StatelessWidget {   /// viewFactoryReading
+class DashboardPage extends StatelessWidget {  
   final Function(int)? onNavigateToProfile;
 
    DashboardPage({super.key, this.onNavigateToProfile});

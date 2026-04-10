@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -29,8 +30,58 @@ class _CreateNewProjectState extends State<CreateNewProject> {
   void initState() {
     super.initState();
     _siteListBloc = SiteListBloc();
-    _getCurrentLocation();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _getCurrentLocation();
+    });
     _fetchSiteList();
+  }
+
+  LocationSettings _currentPositionSettings() {
+    if (kIsWeb) {
+      return const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 20),
+      );
+    }
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+        return AndroidSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 0,
+          timeLimit: const Duration(seconds: 20),
+        );
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        return AppleSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: const Duration(seconds: 20),
+        );
+      default:
+        return const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 20),
+        );
+    }
+  }
+
+  String _placemarkToAddress(Placemark place) {
+    final parts = <String>[
+      if ((place.street ?? '').trim().isNotEmpty) place.street!.trim(),
+      if ((place.subLocality ?? '').trim().isNotEmpty) place.subLocality!.trim(),
+      if ((place.locality ?? '').trim().isNotEmpty) place.locality!.trim(),
+      if ((place.administrativeArea ?? '').trim().isNotEmpty)
+        place.administrativeArea!.trim(),
+      if ((place.postalCode ?? '').trim().isNotEmpty) place.postalCode!.trim(),
+      if ((place.country ?? '').trim().isNotEmpty) place.country!.trim(),
+    ];
+    return parts.join(', ');
+  }
+
+  void _applyLocationText(String text) {
+    if (!mounted) return;
+    setState(() {
+      _locationController.text = text;
+    });
   }
 
   void _fetchSiteList() {
@@ -47,36 +98,51 @@ class _CreateNewProjectState extends State<CreateNewProject> {
   /// Get Current Location
   Future<void> _getCurrentLocation() async {
     try {
-
-      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      final serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
-        _locationController.text = "Location disabled";
+        _applyLocationText('Location services are off. Turn them on to use your current location.');
         return;
       }
 
-      LocationPermission permission = await Geolocator.checkPermission();
-
+      var permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
       }
+      if (permission == LocationPermission.denied) {
+        _applyLocationText('Location permission denied.');
+        return;
+      }
+      if (permission == LocationPermission.deniedForever) {
+        _applyLocationText(
+            'Location permission blocked. Enable it in app settings, then reopen this screen.');
+        return;
+      }
 
-      Position position = await Geolocator.getCurrentPosition();
+      final position = await Geolocator.getCurrentPosition(
+        locationSettings: _currentPositionSettings(),
+      );
 
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          position.latitude, position.longitude);
+      final coordLabel =
+          '${position.latitude.toStringAsFixed(6)}, ${position.longitude.toStringAsFixed(6)}';
+
+      List<Placemark> placemarks;
+      try {
+        placemarks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+      } catch (_) {
+        placemarks = const [];
+      }
 
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks.first;
-
-        String address =
-            "${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
-
-        setState(() {
-          _locationController.text = address;
-        });
+        final address = _placemarkToAddress(placemarks.first);
+        _applyLocationText(address.isNotEmpty ? address : coordLabel);
+      } else {
+        _applyLocationText(coordLabel);
       }
     } catch (e) {
-      _locationController.text = "Unable to get location";
+      _applyLocationText('Unable to get location');
     }
   }
 
